@@ -12,7 +12,7 @@ export default async function DashboardPage() {
       <main className="flex-1 p-8 max-w-4xl mx-auto w-full mt-8">
         <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
           <h1 className="text-3xl font-bold mb-4 text-gray-800">
-            Bienvenido al Área VIP
+            Bienvenido al Área segura
           </h1>
           
           <p className="text-lg text-gray-600">

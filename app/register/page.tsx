@@ -14,24 +14,36 @@ import { Label } from "@/components/ui/label";
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
-
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
+    if (password !== confirmPassword) {
+      setError("Las contraseñas no coinciden.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres.");
+      return;
+    }
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      
       alert("¡Usuario registrado con éxito!");
-      
       router.push("/login");
     } catch (err: unknown) {
       console.error(err);
       if (err instanceof Error) {
-        setError(err.message);
+        if (err.message.includes("auth/email-already-in-use")) {
+          setError("Este email ya está registrado.");
+        } else {
+          setError(err.message);
+        }
       } else {
         setError("Ocurrió un error inesperado.");
       }
@@ -52,11 +64,13 @@ export default function RegisterPage() {
               <Input 
                 id="email" 
                 type="email" 
+                placeholder="ejemplo@correo.com"
                 required 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
+            
             <div className="space-y-2">
               <Label htmlFor="password">Contraseña</Label>
               <Input 
@@ -67,8 +81,23 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">Repetir Contraseña</Label>
+              <Input 
+                id="confirmPassword" 
+                type="password" 
+                required 
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
             
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+            {error && (
+              <div className="bg-red-50 border-l-4 border-red-500 p-2">
+                <p className="text-red-700 text-xs font-medium">{error}</p>
+              </div>
+            )}
 
             <Button type="submit" className="w-full">Registrarse</Button>
             

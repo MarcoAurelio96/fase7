@@ -40,7 +40,7 @@ export default function LoginPage() {
         <CardHeader className="text-center space-y-2">
           <CardTitle className="text-2xl font-bold">Bienvenido</CardTitle>
           <CardDescription>
-            Inicia sesión para acceder al área protegida
+            Inicia sesión
           </CardDescription>
         </CardHeader>
         <CardContent>
